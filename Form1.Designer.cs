@@ -1,6 +1,6 @@
 ﻿namespace lab1
 {
-    partial class Form1
+    partial class MainWindow
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,12 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            pictureBox = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            SuspendLayout();
+            // 
+            // pictureBox
+            // 
+            pictureBox.Location = new Point(12, 12);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new Size(776, 426);
+            pictureBox.TabIndex = 0;
+            pictureBox.TabStop = false;
+            // 
+            // MainWindow
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(pictureBox);
+            Name = "MainWindow";
+            Text = "Form1";
+            Shown += MainWindow_Shown;
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private PictureBox pictureBox;
     }
 }
