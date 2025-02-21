@@ -4,6 +4,8 @@ namespace lab1
 {
     public partial class MainWindow : Form
     {
+
+        private List<Figure>? figures;
         public MainWindow()
         {
             InitializeComponent();
@@ -12,7 +14,7 @@ namespace lab1
         private void MainWindow_Shown(object sender, EventArgs e)
         {
 
-            List<Figure> figures = new List<Figure>() {
+            figures = new List<Figure>() {
                 new Rectangle(5,5),
                 new Rectangle(15,10),
                 new Rectangle(25,15),
@@ -36,10 +38,26 @@ namespace lab1
             };
             for (int i = 0; i < figures.Count / 4; i++)
                 for (int j = 0; j < figures.Count / 5; j++)
-                    figures[i * 4 + j].Build(j * 50, i * 50);
-
-
-            
+                {
+                    figures[i * 4 + j].Build(50 + j * 150, 50 + i * 80);
+                    Graphics gr = pictureBox.CreateGraphics();
+                    if (typeof(Circle).IsInstanceOfType(figures[i * 4 + j]))
+                        gr.DrawCurve(new Pen(Color.Red), figures[i * 4 + j].Points);
+                    else
+                        gr.DrawLines(new Pen(Color.Red), figures[i * 4 + j].Points);
+                }
+            pictureBox.Invalidate();
+        }
+        private void pictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics gr = e.Graphics;
+            foreach (var figure in figures)
+            {
+                if (typeof(Circle).IsInstanceOfType(figure))
+                    gr.DrawCurve(new Pen(Color.Red), figure.Points);
+                else
+                    gr.DrawLines(new Pen(Color.Red), figure.Points);
+            }
         }
     }
 }

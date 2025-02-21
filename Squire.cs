@@ -9,29 +9,15 @@ namespace lab1
 {
     internal class Squire : Rhombus
     {
-        public override void Build(int x, int y) 
+        public override void Build(int x, int y)
         {
-            int xBase, yBase;
+            Points = new Point[5];
 
-            Points = new Point[] { new Point(0,0)};
-
-            for(xBase = 0, yBase = 0; xBase < this.FirstSide; xBase++)
-            {
-                Points = Points.Append(new Point(xBase + x, yBase + y)).ToArray();
-            }
-            for (yBase = 0; yBase < this.FirstSide; yBase++)
-            {
-                Points = Points.Append(new Point(xBase + x, yBase + y)).ToArray();
-            }
-            for (; xBase > 0; xBase--)
-            {
-                Points = Points.Append(new Point(xBase + x, yBase + y)).ToArray();
-            }
-            for (; yBase > 0; yBase++)
-            {
-                Points = Points.Append(new Point(xBase + x, yBase + y)).ToArray();
-            }
-            Points = Points.Skip(1).ToArray();
+            Points[0] = new Point(x, y); 
+            Points[1] = new Point(x + FirstSide, y); 
+            Points[2] = new Point(x + FirstSide, y + FirstSide); 
+            Points[3] = new Point(x, y + FirstSide);
+            Points[4] = Points[0];
         }
 
         public Squire(int aSide) : base(aSide, 90) { FirstSide = aSide; }

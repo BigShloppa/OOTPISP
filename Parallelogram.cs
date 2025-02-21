@@ -8,7 +8,20 @@ namespace lab1
 {
     internal class Parallelogram : Figure
     {
-        public override void Build(int x, int y) { }
+        public override void Build(int x, int y) 
+        {
+            Points = new Point[5];
+
+            double angleInRadians = Math.PI * Angle / 180;
+
+            Points[0] = new Point(x, y);
+            Points[1] = new Point(x + FirstSide, y); 
+            Points[2] = new Point(x + FirstSide + (int)(SecondSide * Math.Cos(angleInRadians)),
+                                  y + (int)(SecondSide * Math.Sin(angleInRadians))); 
+            Points[3] = new Point(x + (int)(SecondSide * Math.Cos(angleInRadians)),
+                                  y + (int)(SecondSide * Math.Sin(angleInRadians)));
+            Points[4] = Points[0];
+        }
         public int FirstSide { get; set; }
 
         public int SecondSide { get; set; }

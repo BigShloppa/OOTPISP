@@ -40,6 +40,7 @@
             pictureBox.Size = new Size(776, 426);
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
+            pictureBox.Paint += pictureBox_Paint;
             // 
             // MainWindow
             // 
@@ -48,7 +49,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(pictureBox);
             Name = "MainWindow";
-            Text = "Form1";
+            Text = "ООТПИСП Paint";
             Shown += MainWindow_Shown;
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             ResumeLayout(false);
