@@ -1,6 +1,6 @@
-﻿namespace lab1
+﻿namespace lab2
 {
-    partial class MainWindow
+    partial class MainWindowForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,34 +30,50 @@
         {
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             pictureBox = new PictureBox();
+            colorDialog = new ColorDialog();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             SuspendLayout();
             // 
             // pictureBox
             // 
+            pictureBox.BackColor = SystemColors.Control;
             pictureBox.Location = new Point(12, 12);
             pictureBox.Name = "pictureBox";
             pictureBox.Size = new Size(776, 426);
+            pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             pictureBox.Paint += pictureBox_Paint;
+            pictureBox.MouseDown += pictureBox_MouseDown;
+            pictureBox.MouseMove += pictureBox_MouseMove;
+            pictureBox.MouseUp += pictureBox_MouseUp;
             // 
-            // MainWindow
+            // colorDialog
+            // 
+            colorDialog.AnyColor = true;
+            // 
+            // MainWindowForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackColor = SystemColors.ActiveBorder;
+            ClientSize = new Size(800, 446);
             Controls.Add(pictureBox);
-            Name = "MainWindow";
+            Name = "MainWindowForm";
             Text = "ООТПИСП Paint";
             Shown += MainWindow_Shown;
+            Click += MainWindowForm_Click;
+            KeyDown += MainWindowForm_KeyDown;
+            MouseDown += MainWindowForm_MouseDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private PictureBox pictureBox;
+        private ColorDialog colorDialog;
     }
 }

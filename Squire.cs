@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab1
+namespace lab2
 {
     internal class Squire : Rhombus
     {

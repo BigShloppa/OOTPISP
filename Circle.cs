@@ -4,34 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab1
+namespace lab2
 {
     internal class Circle : Figure
     {
-        public override void Build(int x, int y) 
+        public override void Build(int x, int y)
         {
-            Points = new Point[] { new Point(0, 0) };
-            for (int xBase = -Radius; xBase <= Radius; xBase++)
+            int PointsCount = this.Radius * 6;
+            Points = new Point[PointsCount];
+            double angleStep = 2 * Math.PI / PointsCount;
+
+            for (int i = 0; i < PointsCount; i++)
             {
-                for (int yBase = 0; yBase <= Radius; yBase++)
-                {
-                    if (xBase * xBase + yBase * yBase == Radius * Radius)
-                    {
-                        Points = Points.Append(new Point(xBase + x, yBase + y)).ToArray();
-                    }
-                }
+                double angle = i * angleStep;
+                int xOffset = (int)(Radius * Math.Cos(angle));
+                int yOffset = (int)(Radius * Math.Sin(angle));
+                Points[i] = new Point(x + xOffset, y + yOffset);
             }
-            for (int xBase = Radius; xBase >= -Radius; xBase--)
-            {
-                for (int yBase = -Radius; yBase <= 0; yBase++)
-                {
-                    if (xBase * xBase + yBase * yBase == Radius * Radius)
-                    {
-                        Points = Points.Append(new Point(xBase + x, yBase + y)).ToArray();
-                    }
-                }
-            }
-            Points = Points.Skip(1).ToArray();
         }
 
         public int Radius { get; set; }
