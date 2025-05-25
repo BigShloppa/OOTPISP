@@ -46,7 +46,6 @@
             pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
-            pictureBox.Paint += pictureBox_Paint;
             pictureBox.MouseDown += pictureBox_MouseDown;
             pictureBox.MouseMove += pictureBox_MouseMove;
             pictureBox.MouseUp += pictureBox_MouseUp;
@@ -69,6 +68,7 @@
             справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
             справкаToolStripMenuItem.Size = new Size(65, 20);
             справкаToolStripMenuItem.Text = "Справка";
+            справкаToolStripMenuItem.Click += справкаToolStripMenuItem_Click;
             // 
             // MainWindowForm
             // 
@@ -81,10 +81,7 @@
             MainMenuStrip = menuStrip1;
             Name = "MainWindowForm";
             Text = "ООТПИСП Paint";
-            Shown += MainWindow_Shown;
-            Click += MainWindowForm_Click;
             KeyDown += MainWindowForm_KeyDown;
-            MouseDown += MainWindowForm_MouseDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();

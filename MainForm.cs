@@ -57,15 +57,6 @@ namespace lab2
             figureList.figuresList = new Dictionary<string, Drawing.figureConstructor>(staticPairs);
             figureList.ReadDLLs();
         }
-         
-        private void MainWindow_Shown(object sender, EventArgs e)
-        {
-            
-        }
-        private void pictureBox_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void MainWindowForm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -134,19 +125,9 @@ namespace lab2
 
                 pictureBox.Image?.Dispose();
                 pictureBox.Image = (Image)states[statesActiveIndex].Clone();
-                drawing.gr = Graphics.FromImage(pictureBox.Image); 
+                drawing.gr = Graphics.FromImage(pictureBox.Image);
                 pictureBox.Invalidate();
             }
-        }
-
-        private void MainWindowForm_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MainWindowForm_MouseDown(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
@@ -164,7 +145,7 @@ namespace lab2
             if (drawingActive)
             {
 
-                
+
                 if (!drawing.cursor)
                 {
                     if (figureDrawing)
@@ -180,7 +161,7 @@ namespace lab2
                         statesActiveIndex++;
                         figureDrawing = true;
                     }
-                    
+
                 }
                 drawing.setPoint(new Point(e.X, e.Y));
                 drawing.Draw(pictureBox);
@@ -191,7 +172,7 @@ namespace lab2
         {
             figureDrawing = false;
             drawingActive = false;
-            drawing.PreviousPoint = new Point(0,0);
+            drawing.PreviousPoint = new Point(0, 0);
             states.Add(new Bitmap(pictureBox.Image));
             statesActiveIndex++;
             while (!drawing.cursor && statesActiveIndex < states.Count - 1)
@@ -202,7 +183,23 @@ namespace lab2
                 pictureBox.Invalidate();
                 statesActiveIndex++;
             }
-            
+
+        }
+
+        private void справкаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Управление данной программой осуществляется при помощи клавиш. \n\n " +
+                "\"D\" открывает меню настройки кисти;\n" +
+                "\"S\" открывает меню сохранения рисунка;\n" +
+                "\"O\" открывает меню открытия уже существующего рисунка;\n" +
+                "\"<-\" и \"->\" используются как redo и undo;\n\n" +
+                "Рисунки сохраняются в формат .bbl, представляющий собой последовательность действий," +
+                " совершённых пользователем при отрисовке изображения.\n\n" +
+                "Также Вы можете добавлять собственные плагин-фигуры. Для этого поместите в папку с программой .dll C# класс, содержащий вашу фигуру.\n" +
+                "Наследуйтесь от класса Figure, реализуйте метод Build для построения точек, описывающих вашу фигуру и создайте конструктор для вашей" +
+                "фигуры от точек левого верхнего и правого нижнего краёв фигуры.\n\n" +
+                "Плагины можно в любой момент выключить в создаваемом после первого запуска в папке с программой файле dlls.conf\n" +
+                "Значения \"true\" или \"false\" после имени плагина и знака равно задаёт видимость Вашей фигуры.");
         }
     }
 }

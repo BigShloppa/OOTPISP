@@ -53,11 +53,6 @@ namespace lab2
             thickness = Int32.Parse(comboBox1.Text);
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void DrawSettingForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
