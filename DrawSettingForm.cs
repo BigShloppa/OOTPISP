@@ -30,32 +30,14 @@ namespace lab2
 
         private void DrawSettingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (button == PressedButton.cursor)
-            {
-                (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, thickness);
-            }
+            (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, thickness);
+            if (comboBox2.Text == "Кисть-курсор")
+                MainWindowParent.drawing.cursor = true;
             else
             {
-                switch (button)
-                {
-                    case PressedButton.parallelogram:
-                        (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, flColor, thickness, new Parallelogram(0, 0, 0));
-                        break;
-                    case PressedButton.square:
-                        (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, flColor, thickness, new Squire(0));
-                        break;
-                    case PressedButton.rectangle:
-                        (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, flColor, thickness, new Rectangle(0, 0));
-                        break;
-                    case PressedButton.rhombus:
-                        (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, flColor, thickness, new Rhombus(0, 0));
-                        break;
-                    case PressedButton.circle:
-                        (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, flColor, thickness, new Circle(0));
-                        break;
-                }
+                MainWindowParent.drawing.Constructor = MainWindowParent.figureList.figuresList.FirstOrDefault(pair => pair.Key == comboBox2.Text).Value;
+                MainWindowParent.drawing.cursor = false;
             }
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -85,6 +67,25 @@ namespace lab2
             if (e.KeyCode == Keys.Escape)
             {
                 this.Close();
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void comboBox1_TextChanged(object sender, EventArgs e)
+        {
+            Int32.TryParse(comboBox1.Text, out thickness);
+        }
+
+        private void DrawSettingForm_Shown(object sender, EventArgs e)
+        {
+            comboBox2.Items.Add("Кисть-курсор");
+            for (int i = 0; i < MainWindowParent.staticPairs.Length; i++)
+            {
+                comboBox2.Items.Add(MainWindowParent.staticPairs[i].Key);
             }
         }
     }

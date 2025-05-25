@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,10 @@ namespace lab2
         public Point point;
 
         public Figure ?figure;
+
+        public delegate Figure figureConstructor(Point FPoint, Point SPoint);
+        public figureConstructor Constructor;
+
         public Drawing() 
         {
             point = new Point(0,0);
@@ -50,11 +55,21 @@ namespace lab2
         
         public void setPoint(Point point) 
         {
-            if (PreviousPoint.X == 0 && PreviousPoint.Y == 0)
-                PreviousPoint = point;
+            if (cursor)
+            {
+                if (PreviousPoint.X == 0 && PreviousPoint.Y == 0)
+                    PreviousPoint = point;
+                else
+                    this.PreviousPoint = this.point;
+                this.point = point;
+            }
             else
-                this.PreviousPoint = this.point;
-            this.point = point;
+            {
+                if (PreviousPoint.X == 0 && PreviousPoint.Y == 0)
+                    PreviousPoint = point;
+                this.point = point;
+                this.figure = this.Constructor(this.PreviousPoint, this.point);
+            }
         }
         
         public void Draw(PictureBox pb) 
@@ -63,15 +78,28 @@ namespace lab2
             {
                 if (drColor != null)
                 {     
-                    gr.DrawCurve(new Pen((Color)drColor, thickness), new Point[] { PreviousPoint, point });
+                    gr.DrawCurve(new Pen((Color)drColor, thickness), new Point[] { PreviousPoint, 
+                        new Point(point.X + int.Sign(point.X - PreviousPoint.X) * thickness / 3,
+                        point.Y + int.Sign(point.Y - PreviousPoint.Y) * thickness / 3) });
                 }
             }
             else
             {
-                if (figure != null && point != null)
+                if (figure != null)
                 {
-                    figure.Build(point.X, point.Y); 
-                    gr.DrawLines(new Pen(Color.Red), figure.Points);
+                    if (point.X < PreviousPoint.X && point.Y < PreviousPoint.Y)
+                        figure.Build(point.X, point.Y);
+                    else if (point.X > PreviousPoint.X && point.Y < PreviousPoint.Y)
+                        figure.Build(PreviousPoint.X, point.Y);
+                    else if (point.X < PreviousPoint.X && point.Y > PreviousPoint.Y)
+                        figure.Build(point.X, PreviousPoint.Y);
+                    else
+                        figure.Build(PreviousPoint.X, PreviousPoint.Y);
+                    if (figure.Points.Length > 0)
+                    {
+                        figure.Points[figure.Points.Length - 1].Y -= thickness / 2;
+                        gr.DrawLines(new Pen((Color)drColor, thickness), figure.Points);
+                    }
                 }
             }
             pb.Invalidate();

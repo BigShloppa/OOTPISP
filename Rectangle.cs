@@ -19,6 +19,8 @@ namespace lab2
             Points[3] = new Point(x, y + SecondSide);
             Points[4] = Points[0];
         }
-        public Rectangle(int aSide, int bSide) : base ( aSide, bSide, 90) { FirstSide = aSide; SecondSide = bSide; }
+        public Rectangle(int aSide, int bSide) : base ( aSide, bSide, 90) { }
+
+        public Rectangle(Point FirstPoint, Point SecondPoint) : base(int.Abs(FirstPoint.X - SecondPoint.X), int.Abs(FirstPoint.Y - SecondPoint.Y), 90) { }
     }
 }

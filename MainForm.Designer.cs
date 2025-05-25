@@ -31,13 +31,16 @@
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             pictureBox = new PictureBox();
             colorDialog = new ColorDialog();
+            menuStrip1 = new MenuStrip();
+            справкаToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox
             // 
             pictureBox.BackColor = SystemColors.Control;
-            pictureBox.Location = new Point(12, 12);
+            pictureBox.Location = new Point(12, 36);
             pictureBox.Name = "pictureBox";
             pictureBox.Size = new Size(776, 426);
             pictureBox.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -52,13 +55,30 @@
             // 
             colorDialog.AnyColor = true;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { справкаToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // справкаToolStripMenuItem
+            // 
+            справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
+            справкаToolStripMenuItem.Size = new Size(65, 20);
+            справкаToolStripMenuItem.Text = "Справка";
+            // 
             // MainWindowForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
-            ClientSize = new Size(800, 446);
+            ClientSize = new Size(800, 474);
             Controls.Add(pictureBox);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "MainWindowForm";
             Text = "ООТПИСП Paint";
             Shown += MainWindow_Shown;
@@ -66,6 +86,8 @@
             KeyDown += MainWindowForm_KeyDown;
             MouseDown += MainWindowForm_MouseDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -75,5 +97,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private PictureBox pictureBox;
         private ColorDialog colorDialog;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem справкаToolStripMenuItem;
     }
 }

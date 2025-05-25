@@ -29,5 +29,12 @@ namespace lab2
         public int Angle { get; set; }
 
         public Parallelogram(int aSide, int bSide, int angle) { FirstSide = aSide; SecondSide = bSide; Angle = angle; }
+        public Parallelogram(Point FirstPoint, Point SecondPoint) {
+            FirstSide = (int)Math.Round(Math.Sqrt(
+        Math.Pow(SecondPoint.X - FirstPoint.X, 2) +
+        Math.Pow(SecondPoint.Y - FirstPoint.Y, 2)));
+            Angle = 45; 
+            SecondSide = FirstSide / 2;
+        }
     }
 }

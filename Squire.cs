@@ -21,5 +21,9 @@ namespace lab2
         }
 
         public Squire(int aSide) : base(aSide, 90) { FirstSide = aSide; }
+        
+        public Squire(Point FirstPoint, Point SecondPoint) : 
+            base(int.Abs(FirstPoint.X - SecondPoint.X) < int.Abs(FirstPoint.Y - SecondPoint.Y) ? int.Abs(FirstPoint.X - SecondPoint.X) :
+                int.Abs(FirstPoint.Y - SecondPoint.Y), 90) { }
     }
 }

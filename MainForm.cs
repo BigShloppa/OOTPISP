@@ -7,9 +7,22 @@ namespace lab2
     {
         static bool mouseEnteredPanel = false;
         static bool redoCalled = false;
+        static bool figureDrawing = false;
 
         private List<Bitmap>? states;
         private int statesActiveIndex;
+        internal FigureList figureList = new FigureList();
+
+        internal KeyValuePair<String, Drawing.figureConstructor>[] staticPairs =
+
+        {
+            new KeyValuePair<String, Drawing.figureConstructor>("Квадрат", (x, y) => new Squire(x, y)),
+            new KeyValuePair<String, Drawing.figureConstructor>("Параллелограмм", (x, y) => new Parallelogram(x, y)),
+            new KeyValuePair<String, Drawing.figureConstructor>("Прямоугольник", (x, y) => new Rectangle(x, y)),
+            new KeyValuePair<String, Drawing.figureConstructor>("Окружность", (x, y) => new Circle(x, y)),
+            new KeyValuePair<String, Drawing.figureConstructor>("Ромб", (x, y) => new Rhombus(x, y))
+        };
+
         private struct Part
         {
             bool cursor;
@@ -38,8 +51,10 @@ namespace lab2
             states = new List<Bitmap>();
             states.Add((Bitmap)pictureBox.Image.Clone());
             statesActiveIndex = 0;
+            figureList.figuresList = new Dictionary<string, Drawing.figureConstructor>(staticPairs);
+            figureList.ReadDLLs();
         }
-
+         
         private void MainWindow_Shown(object sender, EventArgs e)
         {
             
@@ -111,6 +126,25 @@ namespace lab2
         {
             if (drawingActive)
             {
+
+                
+                if (!drawing.cursor)
+                {
+                    if (figureDrawing)
+                    {
+                        pictureBox.Image?.Dispose();
+                        pictureBox.Image = (Image)states[statesActiveIndex].Clone();
+                        drawing.gr = Graphics.FromImage(pictureBox.Image);
+                        pictureBox.Invalidate();
+                    }
+                    else
+                    {
+                        states.Add(new Bitmap(pictureBox.Image));
+                        statesActiveIndex++;
+                        figureDrawing = true;
+                    }
+                    
+                }
                 drawing.setPoint(new Point(e.X, e.Y));
                 drawing.Draw(pictureBox);
             }
@@ -118,10 +152,20 @@ namespace lab2
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
+            figureDrawing = false;
             drawingActive = false;
             drawing.PreviousPoint = new Point(0,0);
             states.Add(new Bitmap(pictureBox.Image));
             statesActiveIndex++;
+            while (!drawing.cursor && statesActiveIndex < states.Count - 1)
+            {
+                pictureBox.Image?.Dispose();
+                pictureBox.Image = (Image)states[statesActiveIndex].Clone();
+                drawing.gr = Graphics.FromImage(pictureBox.Image);
+                pictureBox.Invalidate();
+                statesActiveIndex++;
+            }
+            
         }
     }
 }
