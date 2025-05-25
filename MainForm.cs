@@ -1,5 +1,7 @@
 using Microsoft.VisualBasic.Devices;
 using System.ComponentModel;
+using System.Drawing.Imaging;
+using System.Reflection;
 
 namespace lab2
 {
@@ -9,7 +11,8 @@ namespace lab2
         static bool redoCalled = false;
         static bool figureDrawing = false;
 
-        private List<Bitmap>? states;
+        internal Serializator serializator = new Serializator();
+        public List<Bitmap>? states;
         private int statesActiveIndex;
         internal FigureList figureList = new FigureList();
 
@@ -87,10 +90,10 @@ namespace lab2
                 else
                     statesActiveIndex = 0;
             }
-            else if(e.KeyCode == Keys.Right) 
+            else if (e.KeyCode == Keys.Right)
             {
                 statesActiveIndex++;
-                if(statesActiveIndex < states.Count)
+                if (statesActiveIndex < states.Count)
                 {
                     pictureBox.Image?.Dispose();
                     pictureBox.Image = (Image)states[statesActiveIndex].Clone();
@@ -99,6 +102,40 @@ namespace lab2
                 }
                 else
                     statesActiveIndex--;
+            }
+            else if (e.KeyCode == Keys.S)
+            {
+                serializator.states = [.. states.ToArray()];
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Title = "Сохранить как";
+                saveFileDialog.Filter = "Binary File (*.bbl)|*.bbl|All Files (*.*)|*.*"; // .bbl -- bitmap binary list
+                saveFileDialog.FileName = "drawing.bbl";
+                saveFileDialog.ShowDialog();
+                string filePath = saveFileDialog.FileName;
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+
+                serializator.Serialize(filePath);
+            }
+            else if (e.KeyCode == Keys.O)
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Title = "Открыть";
+                openFileDialog.Filter = "Binary File (*.bbl)|*.bbl|All Files (*.*)|*.*"; // .bbl -- bitmap binary list
+                openFileDialog.ShowDialog();
+                string filePath = openFileDialog.FileName;
+
+                serializator.Deserialize(filePath);
+                states = [.. serializator.states.ToArray()];
+                statesActiveIndex = states.ToArray().Length - 1;
+
+                pictureBox.Image?.Dispose();
+                pictureBox.Image = (Image)states[statesActiveIndex].Clone();
+                drawing.gr = Graphics.FromImage(pictureBox.Image); 
+                pictureBox.Invalidate();
             }
         }
 

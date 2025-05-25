@@ -16,12 +16,8 @@ namespace lab2
         Color flColor = Color.White;
 
         internal MainWindowForm MainWindowParent;
-        enum PressedButton
-        {
-            cursor, rhombus, rectangle, square, parallelogram, circle
-        }
+
         int thickness = 5;
-        PressedButton button = PressedButton.cursor;
 
         public DrawSettingForm()
         {
@@ -59,7 +55,7 @@ namespace lab2
 
         private void button2_Click(object sender, EventArgs e)
         {
-            button = PressedButton.cursor;
+
         }
 
         private void DrawSettingForm_KeyDown(object sender, KeyEventArgs e)
@@ -83,9 +79,9 @@ namespace lab2
         private void DrawSettingForm_Shown(object sender, EventArgs e)
         {
             comboBox2.Items.Add("Кисть-курсор");
-            for (int i = 0; i < MainWindowParent.staticPairs.Length; i++)
+            for (int i = 0; i < MainWindowParent.figureList.figuresList.Count; i++)
             {
-                comboBox2.Items.Add(MainWindowParent.staticPairs[i].Key);
+                comboBox2.Items.Add(MainWindowParent.figureList.figuresList.Keys.ToArray()[i]);
             }
         }
     }
