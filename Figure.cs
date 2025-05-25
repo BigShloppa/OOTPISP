@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lab2
 {
-    internal abstract class Figure
+    public abstract class Figure
     {
         public abstract void Build(int x, int y);
 
