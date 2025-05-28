@@ -12,9 +12,25 @@ i have to create a list of different figures and draw them on window
 
 2:
 
-So now i have to project GUI and application with next requirements:
+So now i have to project GUI and application to be able to meet next requirements:
 -choice of figure;
 -setting of draw parameters;
 -undo-redo;
 -saving list of figures in file;
 -adding new figures by plugins;
+
+3:
+
+drawing of figures, choosing base parameters of drawing
+
+4:
+
+undo-redo list of figures
+
+5:
+
+serialization ( binary in my case ) and deserialization
+
+6:
+
+plugins with figures classes in .dll format
