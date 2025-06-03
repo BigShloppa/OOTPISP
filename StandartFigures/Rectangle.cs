@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab2
+namespace lab
 {
     internal class Rectangle : Parallelogram
     {

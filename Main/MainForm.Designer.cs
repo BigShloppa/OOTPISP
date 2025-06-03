@@ -1,4 +1,4 @@
-﻿namespace lab2
+﻿namespace lab
 {
     partial class MainWindowForm
     {

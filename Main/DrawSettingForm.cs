@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace lab2
+namespace lab
 {
     public partial class DrawSettingForm : Form
     {

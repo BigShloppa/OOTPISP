@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab2
+namespace lab
 {
     internal class Circle : Figure
     {
         public override void Build(int x, int y)
         {
-            int PointsCount = this.Radius * 6;
+            int PointsCount = Radius * 6;
             Points = new Point[PointsCount];
             double angleStep = 2 * Math.PI / PointsCount;
 
@@ -26,7 +26,7 @@ namespace lab2
         public int Radius { get; set; }
 
         public Circle(int radius) { Radius = radius; }
-        public Circle(Point FirstPoint, Point SecondPoint) { Radius = Double.ConvertToInteger<int>(Math.Sqrt((FirstPoint.X - SecondPoint.X) * (FirstPoint.X - SecondPoint.X)
+        public Circle(Point FirstPoint, Point SecondPoint) { Radius = double.ConvertToInteger<int>(Math.Sqrt((FirstPoint.X - SecondPoint.X) * (FirstPoint.X - SecondPoint.X)
                 + (FirstPoint.Y - SecondPoint.Y) * (FirstPoint.Y - SecondPoint.Y))); }
     }
 }

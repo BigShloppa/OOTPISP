@@ -1,4 +1,4 @@
-namespace lab2
+namespace lab.Main
 {
     internal static class Program
     {

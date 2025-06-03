@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Reflection;
 
-namespace lab2
+namespace lab
 {
     public partial class MainWindowForm : Form
     {
@@ -26,22 +26,7 @@ namespace lab2
             new KeyValuePair<String, Drawing.figureConstructor>("Ромб", (x, y) => new Rhombus(x, y))
         };
 
-        private struct Part
-        {
-            bool cursor;
-
-            Color? drColor;
-
-            Color? flColor;
-
-            int thickness;
-
-            public Point point;
-
-            public Figure? figure;
-        }
-
-        Part part;
+       
 
         internal Drawing drawing = new Drawing();
 
