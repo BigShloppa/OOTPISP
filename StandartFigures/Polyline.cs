@@ -8,8 +8,7 @@ namespace lab
 {
     internal class Polyline : Figure
     {
-        private List<Point> pointsList = new List<Point>();
-        private bool isClosed = false;
+        protected List<Point> pointsList = new List<Point>();
 
         public Polyline(Point start, Point end)
         {
@@ -21,16 +20,6 @@ namespace lab
         public void AddPoint(Point p)
         {
             pointsList.Add(p);
-            Points = pointsList.ToArray();
-        }
-
-        public void Close()
-        {
-            isClosed = true;
-            if (pointsList.Count > 2 && pointsList[0] != pointsList[^1])
-            {
-                pointsList.Add(pointsList[0]);
-            }
             Points = pointsList.ToArray();
         }
 

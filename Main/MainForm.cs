@@ -60,7 +60,6 @@ namespace lab
                 {
                     if (poly.Points[poly.Points.Length - 1] == e.Location)
                     {
-                        poly.Close();
                         poly.Build(e.X, e.Y);
 
                         drawing.Draw(pictureBox);
@@ -80,6 +79,8 @@ namespace lab
                 {
                     if (polygon.Vertices[polygon.Vertices.Count - 1] == e.Location)
                     {
+
+                        polygon.Close();
                         polygon.Build(0, 0);
                         drawing.Draw(pictureBox);
 
@@ -155,16 +156,7 @@ namespace lab
 
         private void pictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (multiPointMode && drawing.figure is Polyline poly && poly.Points.Length > 1)
-            {
-                poly.Close(); 
-                poly.Build(0, 0);
 
-                drawing.Draw(pictureBox);
-                states.Add(new Bitmap(pictureBox.Image));
-                statesActiveIndex++;
-                multiPointMode = false;
-            }
         }
 
         private void MainWindowForm_KeyDown(object sender, KeyEventArgs e)
