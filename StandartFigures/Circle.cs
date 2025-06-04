@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace lab
 {
-    internal class Circle : Figure
+    internal class Circle : Ellipse
     {
         public int Radius { get; set; }
 
-        public Circle(int radius) { Radius = radius; }
+        public Circle(int radius) : base(radius * 2, radius * 2) { Radius = radius; }
 
-        public Circle(Point firstPoint, Point secondPoint)
+        public Circle(Point firstPoint, Point secondPoint) : base(firstPoint, secondPoint)
         {
             Radius = (int)Math.Sqrt(Math.Pow(firstPoint.X - secondPoint.X, 2) +
                                     Math.Pow(firstPoint.Y - secondPoint.Y, 2));
