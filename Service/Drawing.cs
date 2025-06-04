@@ -10,25 +10,22 @@ namespace lab
     internal class Drawing
     {
         public bool cursor;
-
-        public Color ?drColor;
-
-        public Color ?flColor;
-
+        public Color? drColor;
+        public Color? flColor;
         int thickness;
 
         public Graphics gr;
         public Point PreviousPoint;
         public Point point;
 
-        public Figure ?figure;
-
+        public Figure? figure;
         public delegate Figure figureConstructor(Point FPoint, Point SPoint);
         public figureConstructor Constructor;
 
-        public Drawing() 
+        public Drawing()
         {
-            point = new Point(0,0);
+            point = new Point(0, 0);
+            PreviousPoint = new Point(0, 0);
             cursor = true;
             drColor = Color.Black;
             flColor = null;
@@ -36,7 +33,7 @@ namespace lab
             figure = null;
         }
 
-        public void setDrawMode(Color drawColor, int thicknessOfDrawing) 
+        public void setDrawMode(Color drawColor, int thicknessOfDrawing)
         {
             flColor = null;
             figure = null;
@@ -44,7 +41,8 @@ namespace lab
             thickness = thicknessOfDrawing;
             drColor = drawColor;
         }
-        public void setDrawMode(Color drawColor, Color fillColor, int thicknessOfDrawing, Figure figureToDraw) 
+
+        public void setDrawMode(Color drawColor, Color fillColor, int thicknessOfDrawing, Figure figureToDraw)
         {
             cursor = false;
             drColor = drawColor;
@@ -52,8 +50,8 @@ namespace lab
             thickness = thicknessOfDrawing;
             figure = figureToDraw;
         }
-        
-        public void setPoint(Point point) 
+
+        public void setPoint(Point point)
         {
             if (cursor)
             {
@@ -61,47 +59,65 @@ namespace lab
                     PreviousPoint = point;
                 else
                     this.PreviousPoint = this.point;
+
                 this.point = point;
             }
             else
             {
                 if (PreviousPoint.X == 0 && PreviousPoint.Y == 0)
                     PreviousPoint = point;
+
                 this.point = point;
                 this.figure = this.Constructor(this.PreviousPoint, this.point);
             }
         }
-        
-        public void Draw(PictureBox pb) 
+
+        public void Draw(PictureBox pb)
         {
-            if (cursor) 
+            if (cursor)
             {
                 if (drColor != null)
-                {     
-                    gr.DrawCurve(new Pen((Color)drColor, thickness), new Point[] { PreviousPoint, 
-                        new Point(point.X + int.Sign(point.X - PreviousPoint.X) * thickness / 3,
-                        point.Y + int.Sign(point.Y - PreviousPoint.Y) * thickness / 3) });
+                {
+                    gr.DrawCurve(new Pen((Color)drColor, thickness), new Point[]
+                    {
+                    PreviousPoint,
+                    new Point(
+                        point.X + Math.Sign(point.X - PreviousPoint.X) * thickness / 3,
+                        point.Y + Math.Sign(point.Y - PreviousPoint.Y) * thickness / 3)
+                    });
                 }
             }
             else
             {
                 if (figure != null)
                 {
-                    if (point.X < PreviousPoint.X && point.Y < PreviousPoint.Y)
-                        figure.Build(point.X, point.Y);
-                    else if (point.X > PreviousPoint.X && point.Y < PreviousPoint.Y)
-                        figure.Build(PreviousPoint.X, point.Y);
-                    else if (point.X < PreviousPoint.X && point.Y > PreviousPoint.Y)
-                        figure.Build(point.X, PreviousPoint.Y);
-                    else
-                        figure.Build(PreviousPoint.X, PreviousPoint.Y);
-                    if (figure.Points.Length > 0)
+                    int x = Math.Min(PreviousPoint.X, point.X);
+                    int y = Math.Min(PreviousPoint.Y, point.Y);
+                    figure.Build(x, y);
+
+                    if (figure.Points?.Length > 1)
                     {
-                        figure.Points[figure.Points.Length - 1].Y -= thickness / 2;
-                        gr.DrawLines(new Pen((Color)drColor, thickness), figure.Points);
+                        using Pen pen = new Pen((Color)drColor, thickness);
+
+                        if (flColor != null && figure.Points.Length >= 3 &&
+                            figure.Points[0] == figure.Points[figure.Points.Length - 1])
+                        {
+                            using SolidBrush brush = new SolidBrush((Color)flColor);
+                            gr.FillPolygon(brush, figure.Points);
+                        }
+
+                        if (figure.Points.Length >= 3 && figure.Points[0] == figure.Points[figure.Points.Length - 1])
+                        {
+                            gr.DrawPolygon(pen, figure.Points);
+                        }
+                        else
+                        {
+                            gr.DrawLines(pen, figure.Points);
+                        }
                     }
                 }
             }
+
             pb.Invalidate();
         }
     }

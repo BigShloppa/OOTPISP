@@ -9,7 +9,7 @@ namespace lab
     public abstract class Figure
     {
         public abstract void Build(int x, int y);
-
         public Point[]? Points;
+
     }
 }
