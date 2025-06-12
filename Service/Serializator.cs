@@ -40,10 +40,10 @@ namespace lab
             PaintingData data = new PaintingData();
             data.drawings = new drawingData[painting.getCount()];
 
-            for (int i = 0; i < painting.getCount(); i++) // фикс
+            for (int i = 0; i < painting.getCount(); i++) 
             {
                 Drawing current = painting.getDrawing(i);
-                data.drawings[i] = new drawingData(); // фикс
+                data.drawings[i] = new drawingData(); 
 
                 data.drawings[i].drColor = current.drColor;
                 data.drawings[i].thickness = current.thickness;
@@ -53,7 +53,6 @@ namespace lab
                 data.drawings[i].drawingFigure = new figureData();
                 data.drawings[i].drawingFigure.points = (Point[])current.figure.Points.Clone();
 
-                // Найти имя фигуры по делегату
                 foreach (var pair in fList.figuresList)
                 {
                     if (pair.Value == current.Constructor)
@@ -72,10 +71,8 @@ namespace lab
                     if (drawing.drawingFigure.points == null)
                         continue;
 
-                    // Write figure name
                     writer.Write(drawing.drawingFigure.Name ?? "");
 
-                    // Write points
                     writer.Write(drawing.drawingFigure.points.Length);
                     foreach (var pt in drawing.drawingFigure.points)
                     {
@@ -83,12 +80,10 @@ namespace lab
                         writer.Write(pt.Y);
                     }
 
-                    // Write color
                     writer.Write(drawing.drColor.HasValue);
                     if (drawing.drColor.HasValue)
                         writer.Write(drawing.drColor.Value.ToArgb());
 
-                    // Write thickness and points
                     writer.Write(drawing.thickness);
                     writer.Write(drawing.point.X);
                     writer.Write(drawing.point.Y);
@@ -108,10 +103,10 @@ namespace lab
                 int count = reader.ReadInt32();
                 data.drawings = new drawingData[count];
 
-                for (int i = 0; i < count; i++) // ← исправлено
+                for (int i = 0; i < count; i++) 
                 {
                     drawingData drawing = new drawingData();
-                    drawing.drawingFigure = new figureData(); // ← обязательно
+                    drawing.drawingFigure = new figureData(); 
 
                     drawing.drawingFigure.Name = reader.ReadString();
 
@@ -135,7 +130,7 @@ namespace lab
                 }
             }
 
-            Drawing[] drawings = new Drawing[data.drawings.Length]; // ← исправлено
+            Drawing[] drawings = new Drawing[data.drawings.Length];
 
             for (int i = 0; i < drawings.Length; i++)
             {
