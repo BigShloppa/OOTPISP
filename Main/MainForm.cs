@@ -1,21 +1,18 @@
 using Microsoft.VisualBasic.Devices;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Reflection;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace lab
 {
     public partial class MainWindowForm : Form
     {
-        static bool mouseEnteredPanel = false;
-        static bool redoCalled = false;
-        static bool figureDrawing = false;
-        static bool multiPointMode = false; 
 
-        internal Serializator serializator = new Serializator();
-        public List<Bitmap>? states;
-        private int statesActiveIndex;
+        internal Serializator serializator;
         internal FigureList figureList = new FigureList();
+        internal Painting painting;
 
         internal KeyValuePair<string, Drawing.figureConstructor>[] staticPairs =
         {
@@ -38,120 +35,35 @@ namespace lab
             InitializeComponent();
             pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
             drawing.gr = Graphics.FromImage(pictureBox.Image);
-            states = new List<Bitmap> { (Bitmap)pictureBox.Image.Clone() };
-            statesActiveIndex = 0;
             figureList.figuresList = new Dictionary<string, Drawing.figureConstructor>(staticPairs);
             figureList.ReadDLLs();
+            painting = new Painting(pictureBox, figureList);
+            painting.setMode("Окружность", 3, Color.Black);
+            {
+                this.SetStyle(
+            ControlStyles.AllPaintingInWmPaint |
+            ControlStyles.OptimizedDoubleBuffer |
+            ControlStyles.UserPaint |
+            ControlStyles.ResizeRedraw |
+            ControlStyles.SupportsTransparentBackColor,
+            true);
+                this.UpdateStyles();
+            }
         }
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            drawingActive = true;
-            if (redoCalled)
-            {
-                states.RemoveRange(statesActiveIndex + 1, states.Count - statesActiveIndex - 1);
-                redoCalled = false;
-            }
-
-            if (!drawing.cursor)
-            {
-
-                if (drawing.figure is Polyline poly)
-                {
-                    if (poly.Points[poly.Points.Length - 1] == e.Location)
-                    {
-                        poly.Build(e.X, e.Y);
-
-                        drawing.Draw(pictureBox);
-                        states.Add(new Bitmap(pictureBox.Image));
-                        statesActiveIndex++;
-                        multiPointMode = false;
-                        return;
-                    }
-                    poly.AddPoint(e.Location);
-                    poly.Build(e.X, e.Y);
-                    drawing.Draw(pictureBox);
-                    multiPointMode = true;
-                    states.Add(new Bitmap(pictureBox.Image));
-                    statesActiveIndex++;
-                }
-                else if (drawing.figure is Polygon polygon)
-                {
-                    if (polygon.Vertices[polygon.Vertices.Count - 1] == e.Location)
-                    {
-
-                        polygon.Close();
-                        polygon.Build(0, 0);
-                        drawing.Draw(pictureBox);
-
-                        states.Add(new Bitmap(pictureBox.Image));
-                        statesActiveIndex++;
-
-                        multiPointMode = false;
-                        return;
-                    }
-                    polygon.Vertices.Add(e.Location);
-                    polygon.Build(0, 0);
-                    drawing.Draw(pictureBox);
-
-                    states.Add(new Bitmap(pictureBox.Image));
-                    statesActiveIndex++;
-                }
-                else if (!multiPointMode)
-                {
-                    drawing.figure = drawing.Constructor(e.Location, e.Location);
-                }
-
-            }
+            painting.penDown(e);
         }
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (drawingActive)
-            {
-
-                if (drawing.figure is Polyline)
-                {
-                    return;
-                }
-                else
-                if (!drawing.cursor)
-                {
-                    if (figureDrawing)
-                    {
-                        pictureBox.Image?.Dispose();
-                        pictureBox.Image = (Image)states[statesActiveIndex].Clone();
-                        drawing.gr = Graphics.FromImage(pictureBox.Image);
-                        pictureBox.Invalidate();
-                    }
-                    else
-                    {
-                        states.Add(new Bitmap(pictureBox.Image));
-                        statesActiveIndex++;
-                        figureDrawing = true;
-                    }
-
-                }
-                drawing.setPoint(new Point(e.X, e.Y));
-                drawing.Draw(pictureBox);
-            }
+            painting.penMove(e);
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            drawingActive = false;
-            drawing.PreviousPoint = new Point(0, 0);
-
-            if (drawing.cursor) 
-            {
-                states.Add(new Bitmap(pictureBox.Image));
-                statesActiveIndex++;
-            }
-            else if (!multiPointMode) 
-            {
-                states.Add(new Bitmap(pictureBox.Image));
-                statesActiveIndex++;
-            }
+            painting.penUp(e);
         }
 
         private void pictureBox_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -170,34 +82,17 @@ namespace lab
             }
             else if (e.KeyCode == Keys.Left)
             {
-                statesActiveIndex--;
-                if (statesActiveIndex > -1)
-                {
-                    pictureBox.Image?.Dispose();
-                    pictureBox.Image = (Image)states[statesActiveIndex].Clone();
-                    drawing.gr = Graphics.FromImage(pictureBox.Image);
-                    pictureBox.Invalidate();
-                    redoCalled = true;
-                }
-                else
-                    statesActiveIndex = 0;
+                painting.Undo();
             }
             else if (e.KeyCode == Keys.Right)
             {
-                statesActiveIndex++;
-                if (statesActiveIndex < states.Count)
-                {
-                    pictureBox.Image?.Dispose();
-                    pictureBox.Image = (Image)states[statesActiveIndex].Clone();
-                    drawing.gr = Graphics.FromImage(pictureBox.Image);
-                    pictureBox.Invalidate();
-                }
-                else
-                    statesActiveIndex--;
+                painting.Redo();
             }
             else if (e.KeyCode == Keys.S)
             {
-                serializator.states = [.. states.ToArray()];
+                serializator = new Serializator(figureList, pictureBox);
+                serializator.SetPainting(painting);
+
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Title = "Сохранить как";
                 saveFileDialog.Filter = "Binary File (*.bbl)|*.bbl|All Files (*.*)|*.*"; // .bbl -- bitmap binary list
@@ -214,20 +109,17 @@ namespace lab
             }
             else if (e.KeyCode == Keys.O)
             {
+                serializator = new Serializator(figureList, pictureBox);
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Title = "Открыть";
                 openFileDialog.Filter = "Binary File (*.bbl)|*.bbl|All Files (*.*)|*.*"; // .bbl -- bitmap binary list
                 openFileDialog.ShowDialog();
                 string filePath = openFileDialog.FileName;
 
-                serializator.Deserialize(filePath);
-                states = [.. serializator.states.ToArray()];
-                statesActiveIndex = states.ToArray().Length - 1;
+                painting = serializator.Deserialize(filePath);
 
-                pictureBox.Image?.Dispose();
-                pictureBox.Image = (Image)states[statesActiveIndex].Clone();
-                drawing.gr = Graphics.FromImage(pictureBox.Image);
-                pictureBox.Invalidate();
+                painting.Undo();
+                painting.Redo();
             }
         }
 

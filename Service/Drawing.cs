@@ -9,13 +9,12 @@ namespace lab
 {
     internal class Drawing
     {
-        public bool cursor;
         public Color? drColor;
         public Color? flColor;
-        int thickness;
+        public int thickness;
 
         public Graphics gr;
-        public Point PreviousPoint;
+        public Point previousPoint;
         public Point point;
 
         public Figure? figure;
@@ -24,75 +23,49 @@ namespace lab
 
         public Drawing()
         {
-            point = new Point(0, 0);
-            PreviousPoint = new Point(0, 0);
-            cursor = true;
+            point = new Point(-1, -1);
+            previousPoint = new Point(-1, -1);
             drColor = Color.Black;
             flColor = null;
             thickness = 3;
             figure = null;
         }
 
+        public Drawing(Drawing dr) 
+        {
+            point = new Point(dr.point.X, dr.point.Y);
+            previousPoint = new Point(dr.previousPoint.X, dr.previousPoint.Y);
+            Constructor = dr.Constructor;
+            drColor = dr.drColor;
+            figure = Constructor(previousPoint, point);
+            gr = dr.gr;
+        }
+
         public void setDrawMode(Color drawColor, int thicknessOfDrawing)
         {
             flColor = null;
             figure = null;
-            cursor = true;
             thickness = thicknessOfDrawing;
             drColor = drawColor;
-        }
-
-        public void setDrawMode(Color drawColor, Color fillColor, int thicknessOfDrawing, Figure figureToDraw)
-        {
-            cursor = false;
-            drColor = drawColor;
-            flColor = fillColor;
-            thickness = thicknessOfDrawing;
-            figure = figureToDraw;
         }
 
         public void setPoint(Point point)
         {
-            if (cursor)
-            {
-                if (PreviousPoint.X == 0 && PreviousPoint.Y == 0)
-                    PreviousPoint = point;
-                else
-                    this.PreviousPoint = this.point;
+                if (previousPoint.X == -1 && previousPoint.Y == -1)
+                    previousPoint = point;
 
                 this.point = point;
-            }
-            else
-            {
-                if (PreviousPoint.X == 0 && PreviousPoint.Y == 0)
-                    PreviousPoint = point;
-
-                this.point = point;
-                this.figure = this.Constructor(this.PreviousPoint, this.point);
-            }
+                this.figure = this.Constructor(this.previousPoint, this.point);
+            
         }
 
         public void Draw(PictureBox pb)
         {
-            if (cursor)
-            {
-                if (drColor != null)
-                {
-                    gr.DrawCurve(new Pen((Color)drColor, thickness), new Point[]
-                    {
-                    PreviousPoint,
-                    new Point(
-                        point.X + Math.Sign(point.X - PreviousPoint.X) * thickness / 3,
-                        point.Y + Math.Sign(point.Y - PreviousPoint.Y) * thickness / 3)
-                    });
-                }
-            }
-            else
-            {
+            
                 if (figure != null)
                 {
-                    int x = Math.Min(PreviousPoint.X, point.X);
-                    int y = Math.Min(PreviousPoint.Y, point.Y);
+                    int x = Math.Min(previousPoint.X, point.X);
+                    int y = Math.Min(previousPoint.Y, point.Y);
                     figure.Build(x, y);
 
                     if (figure.Points?.Length > 1)
@@ -116,9 +89,6 @@ namespace lab
                         }
                     }
                 }
-            }
-
-            pb.Invalidate();
         }
     }
 }

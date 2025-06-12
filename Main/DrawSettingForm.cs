@@ -26,14 +26,7 @@ namespace lab
 
         private void DrawSettingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            (MainWindowParent.drawing = new Drawing()).setDrawMode(drColor, thickness);
-            if (comboBox2.Text == "Кисть-курсор")
-                MainWindowParent.drawing.cursor = true;
-            else
-            {
-                MainWindowParent.drawing.Constructor = MainWindowParent.figureList.figuresList.FirstOrDefault(pair => pair.Key == comboBox2.Text).Value;
-                MainWindowParent.drawing.cursor = false;
-            }
+            MainWindowParent.painting.setMode(comboBox2.Text, thickness, drColor);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -73,7 +66,6 @@ namespace lab
 
         private void DrawSettingForm_Shown(object sender, EventArgs e)
         {
-            comboBox2.Items.Add("Кисть-курсор");
             for (int i = 0; i < MainWindowParent.figureList.figuresList.Count; i++)
             {
                 comboBox2.Items.Add(MainWindowParent.figureList.figuresList.Keys.ToArray()[i]);

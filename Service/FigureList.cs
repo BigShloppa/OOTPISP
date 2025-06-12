@@ -11,7 +11,6 @@ namespace lab
     {
         public Dictionary<string, Drawing.figureConstructor> figuresList = new();
 
-        // Путь к конфигурационному файлу
         private readonly string configFileName = "dlls.conf";
 
         public void ReadDLLs()

@@ -23,14 +23,15 @@ namespace lab
         public override void Build(int x, int y)
         {
             Points = new Point[5];
-            double angleInRadians = Math.PI * Angle / 180;
+
+            double angleInRadians = Math.PI * Angle / 180; 
 
             Points[0] = new Point(x, y);
-            Points[1] = new Point(x + FirstSide, y);
-            Points[2] = new Point(x + (int)(FirstSide * Math.Cos(angleInRadians)),
-                                  y + (int)(FirstSide * Math.Sin(angleInRadians)));
-            Points[3] = new Point(x - (int)(FirstSide * Math.Sin(angleInRadians)),
-                                  y + (int)(FirstSide * Math.Cos(angleInRadians)));
+            Points[1] = new Point((int)(x + FirstSide * Math.Cos(0)), (int)(y + FirstSide * Math.Sin(0)));
+            Points[2] = new Point((int)(x + FirstSide * Math.Cos(angleInRadians)),
+                                  (int)(y + FirstSide * Math.Sin(angleInRadians)));
+            Points[3] = new Point((int)(x + FirstSide * Math.Cos(angleInRadians) - FirstSide),
+                                  (int)(y + FirstSide * Math.Sin(angleInRadians)));
             Points[4] = Points[0];
         }
     }

@@ -23,16 +23,13 @@ namespace lab
             Points = pointsList.ToArray();
         }
 
-        public override void Build(int leftX, int topY)
+        public override void Build(int x, int y)
         {
             if (Points == null || Points.Length == 0) return;
 
-            int offsetX = leftX - Points[0].X;
-            int offsetY = topY - Points[0].Y;
-
             for (int i = 0; i < pointsList.Count; i++)
             {
-                pointsList[i] = new Point(pointsList[i].X + offsetX, pointsList[i].Y + offsetY);
+                pointsList[i] = new Point(pointsList[i].X + x, pointsList[i].Y + y);
             }
 
             Points = pointsList.ToArray();

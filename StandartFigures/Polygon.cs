@@ -18,14 +18,6 @@ namespace lab
             Vertices = points;
         }
 
-        public override void Build(int x, int y)
-        {
-            Points = new Point[Vertices.Count + 1];
-            for (int i = 0; i < Vertices.Count; i++)
-                Points[i] = Vertices[i];
-            Points[Vertices.Count] = Vertices[0]; 
-        }
-
         public void Close()
         {
             isClosed = true;
@@ -36,5 +28,18 @@ namespace lab
             Points = pointsList.ToArray();
         }
 
+        public override void Build(int x, int y)
+        {
+            Close();
+            Points = new Point[Vertices.Count + 1];
+            for (int i = 0; i < Vertices.Count; i++)
+                Points[i] = Vertices[i];
+            Points[Vertices.Count] = Vertices[0];
+
+            for (int i = 0; i < pointsList.Count; i++)
+            {
+                pointsList[i] = new Point(pointsList[i].X + x, pointsList[i].Y + y);
+            }
+        }
     }
 }
