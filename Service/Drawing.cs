@@ -38,7 +38,16 @@ namespace lab
             Constructor = dr.Constructor;
             drColor = dr.drColor;
             figure = Constructor(previousPoint, point);
+            if (figure.Points != null)
+            {
+                figure.Points = new Point[dr.figure.Points.Length];
+                for (int i = 0; i < dr.figure.Points.Length; i++)
+                {
+                    figure.Points[i] = dr.figure.Points[i];
+                }
+            }
             gr = dr.gr;
+            thickness = dr.thickness;
         }
 
         public void setDrawMode(Color drawColor, int thicknessOfDrawing)
@@ -51,12 +60,19 @@ namespace lab
 
         public void setPoint(Point point)
         {
+            if (figure is Polyline polyline)
+            {
+                polyline.AddPoint(point);
+                previousPoint = this.point = point;
+            }
+            else
+            {
                 if (previousPoint.X == -1 && previousPoint.Y == -1)
                     previousPoint = point;
 
                 this.point = point;
                 this.figure = this.Constructor(this.previousPoint, this.point);
-            
+            }
         }
 
         public void Draw(PictureBox pb)
@@ -68,25 +84,10 @@ namespace lab
                     int y = Math.Min(previousPoint.Y, point.Y);
                     figure.Build(x, y);
 
-                    if (figure.Points?.Length > 1)
+                if (figure.Points?.Length > 1)
                     {
                         using Pen pen = new Pen((Color)drColor, thickness);
-
-                        if (flColor != null && figure.Points.Length >= 3 &&
-                            figure.Points[0] == figure.Points[figure.Points.Length - 1])
-                        {
-                            using SolidBrush brush = new SolidBrush((Color)flColor);
-                            gr.FillPolygon(brush, figure.Points);
-                        }
-
-                        if (figure.Points.Length >= 3 && figure.Points[0] == figure.Points[figure.Points.Length - 1])
-                        {
-                            gr.DrawPolygon(pen, figure.Points);
-                        }
-                        else
-                        {
                             gr.DrawLines(pen, figure.Points);
-                        }
                     }
                 }
         }

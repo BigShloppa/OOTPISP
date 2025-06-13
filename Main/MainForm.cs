@@ -23,8 +23,8 @@ namespace lab
         new("Ромб", (x, y) => new Rhombus(x, y)),
         new("Линия", (x, y) => new Line(x, y)),
         new("Эллипс", (x, y) => new Ellipse(x, y)),
-        new("Полилиния", (x, y) => new Polyline(x,y)),
-        new("Полигон", (x, y) => new Polygon(new List<Point> { x,y }))
+        new("Ломаная", (x, y) => new Polyline(x,y)),
+        new("Многоугольник", (x, y) => new Polygon(new List<Point> { x,y }))
     };
 
         internal Drawing drawing = new Drawing();

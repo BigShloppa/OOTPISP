@@ -13,26 +13,19 @@ namespace lab
         public Polyline(Point start, Point end)
         {
             pointsList.Add(start);
-            pointsList.Add(end);
             Points = pointsList.ToArray();
         }
 
         public void AddPoint(Point p)
         {
+            if(pointsList.Count > 0 && pointsList[0].X == 0 && pointsList[0].Y == 0) 
+                pointsList.RemoveAt(0);
             pointsList.Add(p);
             Points = pointsList.ToArray();
         }
 
         public override void Build(int x, int y)
         {
-            if (Points == null || Points.Length == 0) return;
-
-            for (int i = 0; i < pointsList.Count; i++)
-            {
-                pointsList[i] = new Point(pointsList[i].X + x, pointsList[i].Y + y);
-            }
-
-            Points = pointsList.ToArray();
         }
     }
 }

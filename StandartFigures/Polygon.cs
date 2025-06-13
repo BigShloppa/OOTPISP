@@ -20,26 +20,12 @@ namespace lab
 
         public void Close()
         {
-            isClosed = true;
-            if (pointsList.Count > 2 && pointsList[0] != pointsList[^1])
-            {
-                pointsList.Add(pointsList[0]);
-            }
-            Points = pointsList.ToArray();
+            Points = Points.Append(Points[0]).ToArray();
         }
 
         public override void Build(int x, int y)
         {
             Close();
-            Points = new Point[Vertices.Count + 1];
-            for (int i = 0; i < Vertices.Count; i++)
-                Points[i] = Vertices[i];
-            Points[Vertices.Count] = Vertices[0];
-
-            for (int i = 0; i < pointsList.Count; i++)
-            {
-                pointsList[i] = new Point(pointsList[i].X + x, pointsList[i].Y + y);
-            }
         }
     }
 }

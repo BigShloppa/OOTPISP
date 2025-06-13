@@ -99,24 +99,48 @@ namespace lab
             if (currentDrawing == null)
                 return;
             Save();
-            if (currentDrawing.figure is Polyline poly) 
+                if (currentDrawing.figure is Polyline poly)
             {
-                if(poly.Points.Length > 0 && e.Location == poly.Points[poly.Points.Length - 1])
-                    poly.Build(poly.Points[0].X, poly.Points[0].Y);
+                if (poly.Points.Length > 0 && e.Location == poly.Points[poly.Points.Length - 1])
+                {
+
+                    currentDrawing.setPoint(poly.Points[0]);
+                    currentDrawing.setPoint(poly.Points[0]);
+
+                    poly.Points = poly.Points.Take(poly.Points.Length - 2).ToArray();
+
+                    Add(new Drawing(currentDrawing));
+
+                    Drawing nDrawing = new Drawing();
+                    nDrawing.gr = currentDrawing.gr;
+                    nDrawing.Constructor = currentDrawing.Constructor;
+                    nDrawing.figure = currentDrawing.Constructor(new Point(0, 0), new Point(0, 0));
+                    nDrawing.gr = objectBox.CreateGraphics();
+                    nDrawing.drColor = currentDrawing.drColor;
+                    nDrawing.thickness = currentDrawing.thickness;
+
+                    currentDrawing = new Drawing(nDrawing);
+                }
                 else
+                {
                     poly.AddPoint(e.Location);
+                    Remove();
+                    Add(new Drawing(currentDrawing));
+                }
             }
             else
             {
                 currentDrawing.setPoint(e.Location);
+                Add(new Drawing(currentDrawing));
+                drawActive = true;
             }
-            Add(new Drawing(currentDrawing));
-            drawActive = true;
         }
 
         public void penUp(MouseEventArgs e) 
         {
             if (currentDrawing == null)
+                return;
+            if (currentDrawing.figure is Polyline)
                 return;
             Remove();
             Add(new Drawing(currentDrawing));

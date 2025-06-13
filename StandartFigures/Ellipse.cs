@@ -45,11 +45,6 @@ namespace lab
             }
 
             Points[pointsCount] = Points[0]; 
-
-            for(int i = 0; i < pointsCount; i++) 
-            {
-                Points[i] = new Point(Points[i].X + x, Points[i].Y + y);
-            }
         }
     }
 }
