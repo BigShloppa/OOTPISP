@@ -52,7 +52,11 @@ namespace lab
             {
                 using StreamWriter sw = new(configFileName, false);
                 foreach (var kv in config)
+                {
+                    if (kv.Key == "lab2.dll" || kv.Key == "lab.dll")
+                        continue;
                     sw.WriteLine($"{kv.Key} = {kv.Value.ToString().ToLower()}");
+                }
             }
 
             foreach (var kv in config)
@@ -60,7 +64,7 @@ namespace lab
                 if (!kv.Value) continue;
 
                 string dllFullPath = Path.Combine(folder, kv.Key);
-                if (!File.Exists(dllFullPath) || kv.Key == "lab2.dll")
+                if (!File.Exists(dllFullPath) || kv.Key == "lab2.dll" || kv.Key == "lab.dll")
                     continue;
 
                 try

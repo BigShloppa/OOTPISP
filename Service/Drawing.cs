@@ -79,24 +79,24 @@ namespace lab
         public void Draw(PictureBox pb)
         {
             
-                if (figure != null)
+            if (figure != null)
+            {
+                int x = Math.Min(previousPoint.X, point.X);
+                int y = Math.Min(previousPoint.Y, point.Y);
+                figure.Build(x, y);
+
+                if(figure.Points.Length > 2)
                 {
-                    int x = Math.Min(previousPoint.X, point.X);
-                    int y = Math.Min(previousPoint.Y, point.Y);
-                    figure.Build(x, y);
-
-                    if(figure.Points.Length > 2)
-                    {
-                        using SolidBrush brush = new SolidBrush((Color)flColor);
-                        gr.FillPolygon(brush, figure.Points);
-                    }
-
-                    if (figure.Points?.Length > 1)
-                    {
-                        using Pen pen = new Pen((Color)drColor, thickness);
-                        gr.DrawLines(pen, figure.Points);
-                    }
+                    using SolidBrush brush = new SolidBrush((Color)flColor);
+                    gr.FillPolygon(brush, figure.Points);
                 }
+
+                if (figure.Points?.Length > 1)
+                {
+                    using Pen pen = new Pen((Color)drColor, thickness);
+                    gr.DrawLines(pen, figure.Points);
+                }
+            }
         }
     }
 }
