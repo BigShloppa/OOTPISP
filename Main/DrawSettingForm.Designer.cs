@@ -37,6 +37,9 @@
             button9 = new Button();
             label4 = new Label();
             comboBox2 = new ComboBox();
+            label5 = new Label();
+            button3 = new Button();
+            colorDialog2 = new ColorDialog();
             SuspendLayout();
             // 
             // button1
@@ -64,7 +67,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Consolas", 14.25F);
-            label2.Location = new Point(12, 79);
+            label2.Location = new Point(12, 118);
             label2.Name = "label2";
             label2.Size = new Size(140, 22);
             label2.TabIndex = 2;
@@ -75,7 +78,7 @@
             comboBox1.Font = new Font("Consolas", 14.25F);
             comboBox1.FormattingEnabled = true;
             comboBox1.Items.AddRange(new object[] { "1", "2", "3", "5", "7", "10", "13", "15", "17", "20", "25", "30" });
-            comboBox1.Location = new Point(198, 77);
+            comboBox1.Location = new Point(198, 116);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(140, 30);
             comboBox1.TabIndex = 2;
@@ -85,7 +88,7 @@
             // button9
             // 
             button9.Font = new Font("Consolas", 14.25F);
-            button9.Location = new Point(198, 172);
+            button9.Location = new Point(198, 211);
             button9.Name = "button9";
             button9.Size = new Size(140, 45);
             button9.TabIndex = 4;
@@ -97,7 +100,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Consolas", 14.25F);
-            label4.Location = new Point(12, 127);
+            label4.Location = new Point(12, 166);
             label4.Name = "label4";
             label4.Size = new Size(70, 22);
             label4.TabIndex = 13;
@@ -108,16 +111,40 @@
             comboBox2.BackColor = SystemColors.Window;
             comboBox2.Font = new Font("Consolas", 14.25F);
             comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(198, 124);
+            comboBox2.Location = new Point(198, 163);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(140, 30);
             comboBox2.TabIndex = 3;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Consolas", 14.25F);
+            label5.Location = new Point(12, 75);
+            label5.Name = "label5";
+            label5.Size = new Size(130, 22);
+            label5.TabIndex = 17;
+            label5.Text = "Цвет заливки";
+            label5.Click += this.label5_Click;
+            // 
+            // button3
+            // 
+            button3.Font = new Font("Consolas", 14.25F);
+            button3.Location = new Point(198, 69);
+            button3.Name = "button3";
+            button3.Size = new Size(140, 35);
+            button3.TabIndex = 16;
+            button3.Text = "Выбрать";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button8_Click;
             // 
             // DrawSettingForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(350, 230);
+            ClientSize = new Size(350, 268);
+            Controls.Add(label5);
+            Controls.Add(button3);
             Controls.Add(comboBox2);
             Controls.Add(label4);
             Controls.Add(button9);
@@ -145,5 +172,8 @@
         private Button button9;
         private Label label4;
         private ComboBox comboBox2;
+        private Label label5;
+        private Button button3;
+        private ColorDialog colorDialog2;
     }
 }

@@ -48,11 +48,12 @@ namespace lab
             }
             gr = dr.gr;
             thickness = dr.thickness;
+            flColor = dr.flColor;
         }
 
-        public void setDrawMode(Color drawColor, int thicknessOfDrawing)
+        public void setDrawMode(Color drawColor, int thicknessOfDrawing, Color flColor)
         {
-            flColor = null;
+            this.flColor = flColor;
             figure = null;
             thickness = thicknessOfDrawing;
             drColor = drawColor;
@@ -84,10 +85,16 @@ namespace lab
                     int y = Math.Min(previousPoint.Y, point.Y);
                     figure.Build(x, y);
 
-                if (figure.Points?.Length > 1)
+                    if(figure.Points.Length > 2)
+                    {
+                        using SolidBrush brush = new SolidBrush((Color)flColor);
+                        gr.FillPolygon(brush, figure.Points);
+                    }
+
+                    if (figure.Points?.Length > 1)
                     {
                         using Pen pen = new Pen((Color)drColor, thickness);
-                            gr.DrawLines(pen, figure.Points);
+                        gr.DrawLines(pen, figure.Points);
                     }
                 }
         }

@@ -38,7 +38,7 @@ namespace lab
             figureList.figuresList = new Dictionary<string, Drawing.figureConstructor>(staticPairs);
             figureList.ReadDLLs();
             painting = new Painting(pictureBox, figureList);
-            painting.setMode("Окружность", 3, Color.Black);
+            painting.setMode("Окружность", 3, Color.Black, Color.White);
             {
                 this.SetStyle(
             ControlStyles.AllPaintingInWmPaint |

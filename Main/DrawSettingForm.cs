@@ -26,9 +26,16 @@ namespace lab
 
         private void DrawSettingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainWindowParent.painting.setMode(comboBox2.Text, thickness, drColor);
+            if (comboBox2.Text == "")
+                MainWindowParent.painting.setMode("Квадрат", thickness, drColor, flColor);
+            else
+                MainWindowParent.painting.setMode(comboBox2.Text, thickness, drColor, flColor);
         }
 
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             colorDialog1.ShowDialog();

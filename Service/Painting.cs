@@ -85,7 +85,7 @@ namespace lab
             }
         }
 
-        public void setMode(String fString, int thickness, Color drColor) 
+        public void setMode(String fString, int thickness, Color drColor, Color flColor) 
         {
             currentDrawing = new Drawing();
             currentDrawing.Constructor = fList.figuresList.GetValueOrDefault(fString);
@@ -93,9 +93,12 @@ namespace lab
             currentDrawing.gr = objectBox.CreateGraphics();
             currentDrawing.drColor = drColor;
             currentDrawing.thickness = thickness;
+            currentDrawing.flColor = flColor;
         }
         public void penDown(MouseEventArgs e) 
         {
+            if (currentDrawing.Constructor == null)
+                return;
             if (currentDrawing == null)
                 return;
             Save();
@@ -118,8 +121,13 @@ namespace lab
                     nDrawing.gr = objectBox.CreateGraphics();
                     nDrawing.drColor = currentDrawing.drColor;
                     nDrawing.thickness = currentDrawing.thickness;
+                    nDrawing.flColor = currentDrawing.flColor;
 
                     currentDrawing = new Drawing(nDrawing);
+                }
+                else if (poly.Points.Length == 1) {
+                    poly.AddPoint(e.Location);
+                    Add(new Drawing(currentDrawing));
                 }
                 else
                 {
@@ -152,6 +160,7 @@ namespace lab
             nDrawing.gr = objectBox.CreateGraphics();
             nDrawing.drColor = currentDrawing.drColor;
             nDrawing.thickness = currentDrawing.thickness;
+            nDrawing.flColor = currentDrawing.flColor;
 
             currentDrawing = new Drawing(nDrawing);
             drawActive = false;
